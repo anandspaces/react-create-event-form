@@ -244,7 +244,6 @@ const resetForm = () => {
             <h2 className="text-2xl font-bold border-l-4 border-blue-500 pl-3">Event Cards</h2>
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <label className="block text-sm font-medium mb-2">Vertical Image (Portrait)*</label>
                 <div className="relative h-48 border-2 border-dashed border-gray-700 rounded-xl flex items-center justify-center">
                   <input
                     type="file"
@@ -263,7 +262,6 @@ const resetForm = () => {
                 </div>
               </div>
               <div>
-                <label className="block text-sm font-medium mb-2">Horizontal Image (Landscape)*</label>
                 <div className="relative h-48 border-2 border-dashed border-gray-700 rounded-xl flex items-center justify-center">
                   <input
                     type="file"
@@ -299,7 +297,6 @@ const resetForm = () => {
             <div className="grid grid-cols-1 gap-6">
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium mb-2">Vertical Video</label>
                   <div className="relative h-48 border-2 border-dashed border-gray-700 rounded-xl flex items-center justify-center">
                     <input
                       type="file"
@@ -319,8 +316,10 @@ const resetForm = () => {
                   </div>
                 </div>
                 
+              <div className="text-sm text-gray-400">
+                <p>We require event images in both vertical (portrait) and horizontal (landscape) formats*</p>
+              </div>
                 <div>
-                  <label className="block text-sm font-medium mb-2">Horizontal Video</label>
                   <div className="relative h-48 border-2 border-dashed border-gray-700 rounded-xl flex items-center justify-center">
                     <input
                       type="file"
@@ -341,14 +340,13 @@ const resetForm = () => {
                 </div>
               </div>
               
-              <div className="text-sm text-gray-400">
-                <p>We require event images in both vertical (portrait) and horizontal (landscape) formats*</p>
-                <p className="mt-2 font-medium">Card Guidelines:</p>
-                <ul className="list-disc pl-5 mt-1">
+              <div className="flex justify-end">
+                <p className="mt-2 text-blue-300 hover:text-blue-200 font-bold">Card Guidelines</p>
+                {/* <ul className="list-disc pl-5 mt-1">
                   <li>Minimum resolution: 1920x1080</li>
                   <li>Max file size: 100MB</li>
                   <li>Supported formats: PNG, JPG, MP4</li>
-                </ul>
+                </ul> */}
               </div>
             </div>
           </section>
@@ -399,6 +397,46 @@ const resetForm = () => {
                   <option value="Virtual">Virtual Event</option>
                   <option value="Hybrid">Hybrid Event</option>
                 </select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-2">Enter Venue Name</label>
+                <input
+                  type="text"
+                  id="name"
+                  className={`w-full p-3 rounded-lg bg-gray-800 border ${errors.name ? 'border-red-500' : 'border-gray-700'}`}
+                  value={eventData.name}
+                  onChange={handleChange}
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-2">Enter City</label>
+                <input
+                  type="text"
+                  id="name"
+                  className={`w-full p-3 rounded-lg bg-gray-800 border ${errors.name ? 'border-red-500' : 'border-gray-700'}`}
+                  value={eventData.name}
+                  onChange={handleChange}
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-2">Price per ticket</label>
+                <input
+                  type="number"
+                  id="name"
+                  className={`w-full p-3 rounded-lg bg-gray-800 border border-gray-700`}
+                  value={eventData.name}
+                  onChange={handleChange}
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-2">Total Tickets</label>
+                <input
+                  type="number"
+                  id="name"
+                  className={`w-full p-3 rounded-lg bg-gray-800 border border-gray-700`}
+                  value={eventData.name}
+                  onChange={handleChange}
+                />
               </div>
             </div>
           </section>
