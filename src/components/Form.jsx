@@ -443,16 +443,7 @@ const resetForm = () => {
   
           {/* Tiered Pricing Section */}
           <section className="space-y-6">
-            <div className="flex justify-between items-center">
               <h2 className="text-2xl font-bold border-l-4 border-blue-500 pl-3">Ticket Options</h2>
-              <button
-                type="button"
-                onClick={addTier}
-                className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors"
-              >
-                <span>+ Add Tier</span>
-              </button>
-            </div>
             
             {tiers.map((tier, index) => (
               <div key={tier.id} className="bg-gray-800 p-4 rounded-xl space-y-4">
@@ -466,9 +457,9 @@ const resetForm = () => {
                     <span>Remove</span>
                   </button>
                 </div>
-                <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm mb-2">Tier Name</label>
+                    <label className="block text-sm mb-2">Name</label>
                     <input
                       type="text"
                       name="name"
@@ -478,7 +469,7 @@ const resetForm = () => {
                     />
                   </div>
                   <div>
-                    <label className="block text-sm mb-2">Price ($)</label>
+                    <label className="block text-sm mb-2">Price per Ticket</label>
                     <input
                       type="number"
                       name="price"
@@ -488,7 +479,7 @@ const resetForm = () => {
                     />
                   </div>
                   <div>
-                    <label className="block text-sm mb-2">Available Until</label>
+                    <label className="block text-sm mb-2">Available Deadline</label>
                     <input
                       type="date"
                       name="availability"
@@ -498,7 +489,7 @@ const resetForm = () => {
                     />
                   </div>
                   <div>
-                    <label className="block text-sm mb-2">Available Slots</label>
+                    <label className="block text-sm mb-2">Slots</label>
                     <input
                       type="number"
                       name="slots"
@@ -510,6 +501,22 @@ const resetForm = () => {
                 </div>
               </div>
             ))}
+            <div className="flex justify-between items-center">
+              <button
+                type="button"
+                onClick={addTier}
+                className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors"
+              >
+                <span>+ Add More</span>
+              </button>
+              <button
+                type="button"
+                className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors"
+              >
+                <span>Done</span>
+              </button>
+
+</div>
           </section>
   
           {/* Contact Information */}
@@ -537,11 +544,17 @@ const resetForm = () => {
                 />
               </div>
             </div>
+          <div className="mt-2">
+              <h3 className="text-white">Terms and Conditions</h3>
+              <p className="text-gray-300 rounded-lg">
+          {/* Terms and Conditions */}
+
+              </p>
+          </div>
           </section>
   
-          {/* Terms and Conditions */}
           <section className="space-y-6">
-            <h2 className="text-2xl font-bold border-l-4 border-blue-500 pl-3">Visibility Settings</h2>
+            {/* <h2 className="text-2xl font-bold border-l-4 border-blue-500 pl-3">Visibility Settings</h2> */}
             <div className="p-4 rounded-lg bg-gray-800 border border-gray-700">
               <label className="flex items-center gap-3">
                 <input
@@ -558,17 +571,17 @@ const resetForm = () => {
   
           {/* Form Actions */}
           <div className="flex flex-col md:flex-row gap-4 justify-end border-t border-gray-800 pt-6">
-            <button
+            {/* <button
               type="button"
               className="px-6 py-3 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors"
             >
               Save Draft
-            </button>
+            </button> */}
             <button
               type="submit"
               className="px-8 py-3 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 rounded-lg font-medium transition-all"
             >
-              Preview Event
+              Preview
             </button>
           </div>
         </form>
