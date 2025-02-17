@@ -212,7 +212,7 @@ const resetForm = () => {
         <form onSubmit={handleSubmit} className="space-y-8">
           {/* Event Details Section */}
           <section className="space-y-6">
-            <h2 className="text-2xl font-bold border-l-4 border-blue-500 pl-3">Event Details</h2>
+            <h2 className="text-2xl font-bold">Event Details</h2>
             <div className="grid md:grid-cols-2 gap-6">
               <div>
                 <label className="block text-sm font-medium mb-2">Event Name</label>
@@ -226,7 +226,7 @@ const resetForm = () => {
                 {errors.name && <p className="text-red-400 text-sm mt-1">{errors.name}</p>}
               </div>
               <div>
-                <label className="block text-sm font-medium mb-2">Category</label>
+                <label className="block text-sm font-medium mb-2">Event Category</label>
                 <input
                   type="text"
                   id="category"
@@ -241,7 +241,7 @@ const resetForm = () => {
   
           {/* Media Upload Section */}
           <section className="space-y-6">
-            <h2 className="text-2xl font-bold border-l-4 border-blue-500 pl-3">Event Cards</h2>
+            <h2 className="text-2xl font-bold">Event Cards</h2>
             <div className="grid md:grid-cols-2 gap-6">
               <div>
                 <div className="relative h-48 border-2 border-dashed border-gray-700 rounded-xl flex items-center justify-center">
@@ -256,7 +256,6 @@ const resetForm = () => {
                   ) : (
                     <div className="text-center p-4">
                       <p className="text-gray-400">Click to upload</p>
-                      <p className="text-xs text-gray-500 mt-1">Recommended ratio: 9:16</p>
                     </div>
                   )}
                 </div>
@@ -274,7 +273,6 @@ const resetForm = () => {
                   ) : (
                     <div className="text-center p-4">
                       <p className="text-gray-400">Click to upload</p>
-                      <p className="text-xs text-gray-500 mt-1">Recommended ratio: 16:9</p>
                     </div>
                   )}
                 </div>
@@ -353,7 +351,6 @@ const resetForm = () => {
   
           {/* Event Settings Section */}
           <section className="space-y-6">
-            <h2 className="text-2xl font-bold border-l-4 border-blue-500 pl-3">Event Settings</h2>
             <div className="grid md:grid-cols-2 gap-6">
               <div>
                 <label className="block text-sm font-medium mb-2">Start Date</label>
@@ -443,7 +440,7 @@ const resetForm = () => {
   
           {/* Tiered Pricing Section */}
           <section className="space-y-6">
-              <h2 className="text-2xl font-bold border-l-4 border-blue-500 pl-3">Ticket Options</h2>
+              <h2 className="text-2xl font-bold">Tiered Pricing Options</h2>
             
             {tiers.map((tier, index) => (
               <div key={tier.id} className="bg-gray-800 p-4 rounded-xl space-y-4">
@@ -521,7 +518,7 @@ const resetForm = () => {
   
           {/* Contact Information */}
           <section className="space-y-6">
-            <h2 className="text-2xl font-bold border-l-4 border-blue-500 pl-3">Contact Information</h2>
+            <h2 className="text-2xl font-bold">Point of Contact</h2>
             <div className="grid md:grid-cols-2 gap-6">
               <div>
                 <label className="block text-sm font-medium mb-2">Organiser Name</label>
@@ -554,7 +551,7 @@ const resetForm = () => {
           </section>
   
           <section className="space-y-6">
-            {/* <h2 className="text-2xl font-bold border-l-4 border-blue-500 pl-3">Visibility Settings</h2> */}
+            {/* <h2 className="text-2xl font-bold">Visibility Settings</h2> */}
             <div className="p-4 rounded-lg bg-gray-800 border border-gray-700">
               <label className="flex items-center gap-3">
                 <input
