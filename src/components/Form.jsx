@@ -21,6 +21,159 @@ function Form() {
   const [errors, setErrors] = useState({});
   const [verticalPreview, setVerticalPreview] = useState(null);
   const [horizontalPreview, setHorizontalPreview] = useState(null);
+  const [verticalVideoPreview, setVerticalVideoPreview] = useState(null);
+  const [horizontalVideoPreview, setHorizontalVideoPreview] = useState(null);
+  const [videoFile, setVideoFile] = useState({
+    vertical: null,
+    horizontal: null
+  });
+
+// Enhanced validation function
+const validateForm = () => {
+  const newErrors = {};
+  const requiredFields = ['name', 'category', 'startDate', 'regDeadline'];
+  
+  requiredFields.forEach(field => {
+    if (!eventData[field]) {
+      newErrors[field] = `${field.charAt(0).toUpperCase() + field.slice(1)} is required`;
+    }
+  });
+
+  if (!verticalPreview) newErrors.verticalImage = "Vertical image is required";
+  if (!horizontalPreview) newErrors.horizontalImage = "Horizontal image is required";
+  
+  if (eventData.endDate && new Date(eventData.endDate) < new Date(eventData.startDate)) {
+    newErrors.endDate = "End date cannot be before start date";
+  }
+
+  if (eventData.phoneNumber && !/^\d{10}$/.test(eventData.phoneNumber)) {
+    newErrors.phoneNumber = "Invalid phone number format";
+  }
+
+  // Validate ticket tiers
+  tiers.forEach((tier, index) => {
+    if (!tier.name || !tier.price || !tier.availability || !tier.slots) {
+      newErrors[`tier${index}`] = `All fields in Tier ${index + 1} are required`;
+    }
+  });
+
+  setErrors(newErrors);
+  return Object.keys(newErrors).length === 0;
+};
+
+// Enhanced image upload handler with file validation
+const handleImageUpload = (e, setPreview) => {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  if (!file.type.match(/image.(jpeg|jpg|png)/)) {
+    setErrors(prev => ({ ...prev, [e.target.name]: 'Only JPG/PNG images allowed' }));
+    return;
+  }
+
+  if (file.size > 100 * 1024 * 1024) { // 100MB
+    setErrors(prev => ({ ...prev, [e.target.name]: 'File size exceeds 100MB limit' }));
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onloadend = () => setPreview(reader.result);
+  reader.readAsDataURL(file);
+};
+
+// New video upload handler
+const handleVideoUpload = (e, type) => {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  if (!file.type.match(/video.(mp4|mov|avi)/)) {
+    setErrors(prev => ({ ...prev, [type]: 'Only MP4/MOV/AVI videos allowed' }));
+    return;
+  }
+
+  if (file.size > 500 * 1024 * 1024) { // 500MB
+    setErrors(prev => ({ ...prev, [type]: 'File size exceeds 500MB limit' }));
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onloadend = () => {
+    type === 'vertical' 
+      ? setVerticalVideoPreview(reader.result)
+      : setHorizontalVideoPreview(reader.result);
+  };
+  reader.readAsDataURL(file);
+  setVideoFile(prev => ({ ...prev, [type]: file }));
+};
+
+// Enhanced form submission handler
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  if (!validateForm()) return;
+
+  const formPayload = new FormData();
+  
+  // Append all event data
+  Object.entries(eventData).forEach(([key, value]) => {
+    formPayload.append(key, value);
+  });
+
+  // Append media files
+  if (verticalPreview) formPayload.append('verticalImage', verticalPreview);
+  if (horizontalPreview) formPayload.append('horizontalImage', horizontalPreview);
+  if (videoFile.vertical) formPayload.append('verticalVideo', videoFile.vertical);
+  if (videoFile.horizontal) formPayload.append('horizontalVideo', videoFile.horizontal);
+
+  // Append ticket tiers
+  tiers.forEach((tier, index) => {
+    Object.entries(tier).forEach(([key, value]) => {
+      formPayload.append(`tier${index}_${key}`, value);
+    });
+  });
+
+  try {
+    // Example API call
+    const response = await fetch('/api/events', {
+      method: 'POST',
+      body: formPayload
+    });
+    
+    if (!response.ok) throw new Error('Submission failed');
+    
+    alert('Event created successfully!');
+    resetForm();
+  } catch (error) {
+    console.error('Submission error:', error);
+    alert('Error creating event. Please try again.');
+  }
+};
+
+// Form reset function
+const resetForm = () => {
+  setEventData({
+    name: "",
+    category: "",
+    description: "",
+    startDate: "",
+    endDate: "",
+    regDeadline: "",
+    pricePerTicket: "",
+    totalTickets: "",
+    organiserName: "",
+    phoneNumber: "",
+    eventType: "Physical",
+    isPrivate: false,
+    displayTitle: false,
+  });
+  setTiers([]);
+  setErrors({});
+  setVerticalPreview(null);
+  setHorizontalPreview(null);
+  setVerticalVideoPreview(null);
+  setHorizontalVideoPreview(null);
+  setVideoFile({ vertical: null, horizontal: null });
+};
+  
 
   const handleChange = (e) => {
     const { id, value, type, checked } = e.target;
@@ -30,17 +183,6 @@ function Form() {
     }));
   };
 
-  const validateForm = () => {
-    const newErrors = {};
-    if (!eventData.name) newErrors.name = "Event name is required";
-    if (!eventData.category) newErrors.category = "Category is required";
-    if (!eventData.startDate) newErrors.startDate = "Start date is required";
-    if (eventData.endDate && new Date(eventData.endDate) < new Date(eventData.startDate)) {
-      newErrors.endDate = "End date cannot be before start date";
-    }
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
 
   const addTier = () => {
     setTiers([...tiers, { id: Date.now(), name: "", price: "", availability: "", slots: "" }]);
@@ -55,32 +197,6 @@ function Form() {
     const updatedTiers = [...tiers];
     updatedTiers[index][name] = value;
     setTiers(updatedTiers);
-  };
-
-  const handleImageUpload = (e, setPreview) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPreview(reader.result);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!validateForm()) return;
-    
-    const formData = {
-      ...eventData,
-      tiers,
-      verticalImage: verticalPreview,
-      horizontalImage: horizontalPreview
-    };
-    
-    console.log("Form Submitted:", formData);
-    alert("Event created successfully!");
   };
 
   return (
