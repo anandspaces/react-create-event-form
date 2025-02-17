@@ -28,152 +28,152 @@ function Form() {
     horizontal: null
   });
 
-// Enhanced validation function
-const validateForm = () => {
-  const newErrors = {};
-  const requiredFields = ['name', 'category', 'startDate', 'regDeadline'];
-  
-  requiredFields.forEach(field => {
-    if (!eventData[field]) {
-      newErrors[field] = `${field.charAt(0).toUpperCase() + field.slice(1)} is required`;
+  // Enhanced validation function
+  const validateForm = () => {
+    const newErrors = {};
+    const requiredFields = ['name', 'category', 'startDate', 'regDeadline'];
+
+    requiredFields.forEach(field => {
+      if (!eventData[field]) {
+        newErrors[field] = `${field.charAt(0).toUpperCase() + field.slice(1)} is required`;
+      }
+    });
+
+    if (!verticalPreview) newErrors.verticalImage = "Vertical image is required";
+    if (!horizontalPreview) newErrors.horizontalImage = "Horizontal image is required";
+
+    if (eventData.endDate && new Date(eventData.endDate) < new Date(eventData.startDate)) {
+      newErrors.endDate = "End date cannot be before start date";
     }
-  });
 
-  if (!verticalPreview) newErrors.verticalImage = "Vertical image is required";
-  if (!horizontalPreview) newErrors.horizontalImage = "Horizontal image is required";
-  
-  if (eventData.endDate && new Date(eventData.endDate) < new Date(eventData.startDate)) {
-    newErrors.endDate = "End date cannot be before start date";
-  }
-
-  if (eventData.phoneNumber && !/^\d{10}$/.test(eventData.phoneNumber)) {
-    newErrors.phoneNumber = "Invalid phone number format";
-  }
-
-  // Validate ticket tiers
-  tiers.forEach((tier, index) => {
-    if (!tier.name || !tier.price || !tier.availability || !tier.slots) {
-      newErrors[`tier${index}`] = `All fields in Tier ${index + 1} are required`;
+    if (eventData.phoneNumber && !/^\d{10}$/.test(eventData.phoneNumber)) {
+      newErrors.phoneNumber = "Invalid phone number format";
     }
-  });
 
-  setErrors(newErrors);
-  return Object.keys(newErrors).length === 0;
-};
+    // Validate ticket tiers
+    tiers.forEach((tier, index) => {
+      if (!tier.name || !tier.price || !tier.availability || !tier.slots) {
+        newErrors[`tier${index}`] = `All fields in Tier ${index + 1} are required`;
+      }
+    });
 
-// Enhanced image upload handler with file validation
-const handleImageUpload = (e, setPreview) => {
-  const file = e.target.files[0];
-  if (!file) return;
-
-  if (!file.type.match(/image.(jpeg|jpg|png)/)) {
-    setErrors(prev => ({ ...prev, [e.target.name]: 'Only JPG/PNG images allowed' }));
-    return;
-  }
-
-  if (file.size > 100 * 1024 * 1024) { // 100MB
-    setErrors(prev => ({ ...prev, [e.target.name]: 'File size exceeds 100MB limit' }));
-    return;
-  }
-
-  const reader = new FileReader();
-  reader.onloadend = () => setPreview(reader.result);
-  reader.readAsDataURL(file);
-};
-
-// New video upload handler
-const handleVideoUpload = (e, type) => {
-  const file = e.target.files[0];
-  if (!file) return;
-
-  if (!file.type.match(/video.(mp4|mov|avi)/)) {
-    setErrors(prev => ({ ...prev, [type]: 'Only MP4/MOV/AVI videos allowed' }));
-    return;
-  }
-
-  if (file.size > 500 * 1024 * 1024) { // 500MB
-    setErrors(prev => ({ ...prev, [type]: 'File size exceeds 500MB limit' }));
-    return;
-  }
-
-  const reader = new FileReader();
-  reader.onloadend = () => {
-    type === 'vertical' 
-      ? setVerticalVideoPreview(reader.result)
-      : setHorizontalVideoPreview(reader.result);
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
-  reader.readAsDataURL(file);
-  setVideoFile(prev => ({ ...prev, [type]: file }));
-};
 
-// Enhanced form submission handler
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  if (!validateForm()) return;
+  // Enhanced image upload handler with file validation
+  const handleImageUpload = (e, setPreview) => {
+    const file = e.target.files[0];
+    if (!file) return;
 
-  const formPayload = new FormData();
-  
-  // Append all event data
-  Object.entries(eventData).forEach(([key, value]) => {
-    formPayload.append(key, value);
-  });
+    if (!file.type.match(/image.(jpeg|jpg|png)/)) {
+      setErrors(prev => ({ ...prev, [e.target.name]: 'Only JPG/PNG images allowed' }));
+      return;
+    }
 
-  // Append media files
-  if (verticalPreview) formPayload.append('verticalImage', verticalPreview);
-  if (horizontalPreview) formPayload.append('horizontalImage', horizontalPreview);
-  if (videoFile.vertical) formPayload.append('verticalVideo', videoFile.vertical);
-  if (videoFile.horizontal) formPayload.append('horizontalVideo', videoFile.horizontal);
+    if (file.size > 100 * 1024 * 1024) { // 100MB
+      setErrors(prev => ({ ...prev, [e.target.name]: 'File size exceeds 100MB limit' }));
+      return;
+    }
 
-  // Append ticket tiers
-  tiers.forEach((tier, index) => {
-    Object.entries(tier).forEach(([key, value]) => {
-      formPayload.append(`tier${index}_${key}`, value);
+    const reader = new FileReader();
+    reader.onloadend = () => setPreview(reader.result);
+    reader.readAsDataURL(file);
+  };
+
+  // New video upload handler
+  const handleVideoUpload = (e, type) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    if (!file.type.match(/video.(mp4|mov|avi)/)) {
+      setErrors(prev => ({ ...prev, [type]: 'Only MP4/MOV/AVI videos allowed' }));
+      return;
+    }
+
+    if (file.size > 500 * 1024 * 1024) { // 500MB
+      setErrors(prev => ({ ...prev, [type]: 'File size exceeds 500MB limit' }));
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      type === 'vertical'
+        ? setVerticalVideoPreview(reader.result)
+        : setHorizontalVideoPreview(reader.result);
+    };
+    reader.readAsDataURL(file);
+    setVideoFile(prev => ({ ...prev, [type]: file }));
+  };
+
+  // Enhanced form submission handler
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!validateForm()) return;
+
+    const formPayload = new FormData();
+
+    // Append all event data
+    Object.entries(eventData).forEach(([key, value]) => {
+      formPayload.append(key, value);
     });
-  });
 
-  try {
-    // Example API call
-    const response = await fetch('/api/events', {
-      method: 'POST',
-      body: formPayload
+    // Append media files
+    if (verticalPreview) formPayload.append('verticalImage', verticalPreview);
+    if (horizontalPreview) formPayload.append('horizontalImage', horizontalPreview);
+    if (videoFile.vertical) formPayload.append('verticalVideo', videoFile.vertical);
+    if (videoFile.horizontal) formPayload.append('horizontalVideo', videoFile.horizontal);
+
+    // Append ticket tiers
+    tiers.forEach((tier, index) => {
+      Object.entries(tier).forEach(([key, value]) => {
+        formPayload.append(`tier${index}_${key}`, value);
+      });
     });
-    
-    if (!response.ok) throw new Error('Submission failed');
-    
-    alert('Event created successfully!');
-    resetForm();
-  } catch (error) {
-    console.error('Submission error:', error);
-    alert('Error creating event. Please try again.');
-  }
-};
 
-// Form reset function
-const resetForm = () => {
-  setEventData({
-    name: "",
-    category: "",
-    description: "",
-    startDate: "",
-    endDate: "",
-    regDeadline: "",
-    pricePerTicket: "",
-    totalTickets: "",
-    organiserName: "",
-    phoneNumber: "",
-    eventType: "Physical",
-    isPrivate: false,
-    displayTitle: false,
-  });
-  setTiers([]);
-  setErrors({});
-  setVerticalPreview(null);
-  setHorizontalPreview(null);
-  setVerticalVideoPreview(null);
-  setHorizontalVideoPreview(null);
-  setVideoFile({ vertical: null, horizontal: null });
-};
-  
+    try {
+      // Example API call
+      const response = await fetch('/api/events', {
+        method: 'POST',
+        body: formPayload
+      });
+
+      if (!response.ok) throw new Error('Submission failed');
+
+      alert('Event created successfully!');
+      resetForm();
+    } catch (error) {
+      console.error('Submission error:', error);
+      alert('Error creating event. Please try again.');
+    }
+  };
+
+  // Form reset function
+  const resetForm = () => {
+    setEventData({
+      name: "",
+      category: "",
+      description: "",
+      startDate: "",
+      endDate: "",
+      regDeadline: "",
+      pricePerTicket: "",
+      totalTickets: "",
+      organiserName: "",
+      phoneNumber: "",
+      eventType: "Physical",
+      isPrivate: false,
+      displayTitle: false,
+    });
+    setTiers([]);
+    setErrors({});
+    setVerticalPreview(null);
+    setHorizontalPreview(null);
+    setVerticalVideoPreview(null);
+    setHorizontalVideoPreview(null);
+    setVideoFile({ vertical: null, horizontal: null });
+  };
+
 
   const handleChange = (e) => {
     const { id, value, type, checked } = e.target;
@@ -208,7 +208,7 @@ const resetForm = () => {
           </h1>
           <p className="text-gray-300 mt-4">Enter your event details</p>
         </div>
-  
+
         <form onSubmit={handleSubmit} className="space-y-8">
           {/* Event Details Section */}
           <section className="space-y-6">
@@ -238,7 +238,7 @@ const resetForm = () => {
               </div>
             </div>
           </section>
-  
+
           {/* Media Upload Section */}
           <section className="space-y-6">
             <h2 className="text-2xl font-bold">Event Cards</h2>
@@ -289,7 +289,7 @@ const resetForm = () => {
               <span className="text-sm">Display title on event card</span>
             </label>
           </section>
-  
+
           {/* Video Upload Section */}
           <section className="space-y-6">
             <div className="grid grid-cols-1 gap-6">
@@ -313,10 +313,10 @@ const resetForm = () => {
                     )}
                   </div>
                 </div>
-                
-              <div className="text-sm text-gray-400">
-                <p>We require event images in both vertical (portrait) and horizontal (landscape) formats*</p>
-              </div>
+
+                <div className="text-sm text-gray-400">
+                  <p>We require event images in both vertical (portrait) and horizontal (landscape) formats*</p>
+                </div>
                 <div>
                   <div className="relative h-48 border-2 border-dashed border-gray-700 rounded-xl flex items-center justify-center">
                     <input
@@ -337,7 +337,7 @@ const resetForm = () => {
                   </div>
                 </div>
               </div>
-              
+
               <div className="flex justify-end">
                 <p className="mt-2 hover:text-gray-300 shadow-xl font-bold">Card Guidelines</p>
                 {/* <ul className="list-disc pl-5 mt-1">
@@ -348,7 +348,7 @@ const resetForm = () => {
               </div>
             </div>
           </section>
-  
+
           {/* Event Settings Section */}
           <section className="space-y-6">
             <div className="grid md:grid-cols-2 gap-6">
@@ -437,11 +437,11 @@ const resetForm = () => {
               </div>
             </div>
           </section>
-  
+
           {/* Tiered Pricing Section */}
           <section className="space-y-6">
-              <h2 className="text-2xl font-bold">Tiered Pricing Options</h2>
-            
+            <h2 className="text-2xl font-bold">Tiered Pricing Options</h2>
+
             {tiers.map((tier, index) => (
               <div key={tier.id} className="bg-gray-800 p-4 rounded-xl space-y-4">
                 <div className="flex justify-between items-center">
@@ -513,9 +513,9 @@ const resetForm = () => {
                 <span>Done</span>
               </button>
 
-</div>
+            </div>
           </section>
-  
+
           {/* Contact Information */}
           <section className="space-y-6">
             <h2 className="text-2xl font-bold">Point of Contact</h2>
@@ -541,15 +541,15 @@ const resetForm = () => {
                 />
               </div>
             </div>
-          <div className="mt-2">
+            <div className="mt-2">
               <h3 className="text-white">Terms and Conditions</h3>
               <p className="text-gray-300 rounded-lg">
-          {/* Terms and Conditions */}
+                {/* Terms and Conditions */}
 
               </p>
-          </div>
+            </div>
           </section>
-  
+
           <section className="space-y-6">
             {/* <h2 className="text-2xl font-bold">Visibility Settings</h2> */}
             <div className="p-4 rounded-lg bg-gray-800 border border-gray-700">
@@ -563,24 +563,24 @@ const resetForm = () => {
                   className="h-5 w-5 rounded border-gray-600 bg-gray-700"
                 />
               </label> */}
-              
-<label class="flex justify-between cursor-pointer">
-  <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">Set event to private</span>
-  <input type="checkbox" value="" class="sr-only peer" />
-  <div class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600 dark:peer-checked:bg-blue-600"></div>
-</label>
+
+              <label class="flex justify-between cursor-pointer">
+                <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">Set event to private</span>
+                <input type="checkbox" value="" class="sr-only peer" />
+                <div class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600 dark:peer-checked:bg-blue-600"></div>
+              </label>
 
             </div>
             <div className="flex justify-end">
 
-            <button
-              className="px-8 py-3 bg-gray-900  hover:bg-gray-800 shadow-xl rounded-lg font-medium transition-all"
-            >
-              Add Section
-            </button>
+              <button
+                className="px-8 py-3 bg-gray-900  hover:bg-gray-800 shadow-xl rounded-lg font-medium transition-all"
+              >
+                Add Section
+              </button>
             </div>
           </section>
-  
+
           {/* Form Actions */}
           <div className="flex flex-col md:flex-row gap-4 justify-end border-t border-gray-800 pt-6">
             {/* <button
