@@ -201,7 +201,7 @@ const resetForm = () => {
 
   return (
     <div className="bg-black text-white min-h-screen flex items-center justify-center p-4">
-      <div className="max-w-4xl w-full mx-auto p-6 shadow-xl rounded-xl bg-gray-900 space-y-8">
+      <div className="max-w-4xl w-full mx-auto p-6 shadow-xl rounded-xl space-y-8">
         <div className="text-center">
           <h1 className="text-4xl md:text-5xl font-bold">
             Create Your Event
@@ -339,7 +339,7 @@ const resetForm = () => {
               </div>
               
               <div className="flex justify-end">
-                <p className="mt-2 text-blue-300 hover:text-blue-200 font-bold">Card Guidelines</p>
+                <p className="mt-2 hover:text-gray-300 shadow-xl font-bold">Card Guidelines</p>
                 {/* <ul className="list-disc pl-5 mt-1">
                   <li>Minimum resolution: 1920x1080</li>
                   <li>Max file size: 100MB</li>
@@ -502,13 +502,13 @@ const resetForm = () => {
               <button
                 type="button"
                 onClick={addTier}
-                className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors"
+                className="flex items-center gap-2 px-4 py-2 bg-gray-900  hover:bg-gray-800 shadow-xl rounded-lg transition-colors"
               >
                 <span>+ Add More</span>
               </button>
               <button
                 type="button"
-                className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors"
+                className="flex items-center gap-2 px-4 py-2 bg-gray-900  hover:bg-gray-800 shadow-xl rounded-lg transition-colors"
               >
                 <span>Done</span>
               </button>
@@ -553,7 +553,8 @@ const resetForm = () => {
           <section className="space-y-6">
             {/* <h2 className="text-2xl font-bold">Visibility Settings</h2> */}
             <div className="p-4 rounded-lg bg-gray-800 border border-gray-700">
-              <label className="flex items-center gap-3">
+              {/* <label className="flex justify-between gap-3">
+                <span className="text-sm">Set event to private</span>
                 <input
                   type="checkbox"
                   id="isPrivate"
@@ -561,8 +562,22 @@ const resetForm = () => {
                   onChange={handleChange}
                   className="h-5 w-5 rounded border-gray-600 bg-gray-700"
                 />
-                <span className="text-sm">Make event private (visible only to invited guests)</span>
-              </label>
+              </label> */}
+              
+<label class="flex justify-between cursor-pointer">
+  <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">Set event to private</span>
+  <input type="checkbox" value="" class="sr-only peer" />
+  <div class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600 dark:peer-checked:bg-blue-600"></div>
+</label>
+
+            </div>
+            <div className="flex justify-end">
+
+            <button
+              className="px-8 py-3 bg-gray-900  hover:bg-gray-800 shadow-xl rounded-lg font-medium transition-all"
+            >
+              Add Section
+            </button>
             </div>
           </section>
   
@@ -576,7 +591,7 @@ const resetForm = () => {
             </button> */}
             <button
               type="submit"
-              className="px-8 py-3 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 rounded-lg font-medium transition-all"
+              className="px-8 py-3 bg-gray-900  hover:bg-gray-800 shadow-xl rounded-lg font-medium transition-all"
             >
               Preview
             </button>
