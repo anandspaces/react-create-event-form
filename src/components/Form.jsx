@@ -203,7 +203,7 @@ const resetForm = () => {
     <div className="bg-black text-white min-h-screen flex items-center justify-center p-4">
       <div className="max-w-4xl w-full mx-auto p-6 shadow-xl rounded-xl bg-gray-900 space-y-8">
         <div className="text-center">
-          <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
+          <h1 className="text-4xl md:text-5xl font-bold">
             Create Your Event
           </h1>
           <p className="text-gray-300 mt-4">Enter your event details</p>

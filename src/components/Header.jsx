@@ -21,11 +21,11 @@ function Header() {
           isOpen ? "block" : "hidden"
         } md:block`}
       >
-        <div className="p-2 hover:text-gray-400 cursor-pointer">Home</div>
-        <div className="p-2 hover:text-gray-400 cursor-pointer">Dashboard</div>
-        <div className="p-2 hover:text-gray-400 cursor-pointer">Reports</div>
-        <div className="p-2 hover:text-gray-400 cursor-pointer">History</div>
-        <div className="p-2 hover:text-gray-400 cursor-pointer">Create Event</div>
+        <div className="p-2 cursor-pointer hover:bg-gradient-to-r hover:from-blue-400 hover:to-purple-500 hover:bg-clip-text hover:text-transparent">Home</div>
+        <div className="p-2 cursor-pointer hover:bg-gradient-to-r hover:from-blue-400 hover:to-purple-500 hover:bg-clip-text hover:text-transparent">Dashboard</div>
+        <div className="p-2 cursor-pointer hover:bg-gradient-to-r hover:from-blue-400 hover:to-purple-500 hover:bg-clip-text hover:text-transparent">Reports</div>
+        <div className="p-2 cursor-pointer hover:bg-gradient-to-r hover:from-blue-400 hover:to-purple-500 hover:bg-clip-text hover:text-transparent">History</div>
+        <div className="p-2 cursor-pointer hover:bg-gradient-to-r hover:from-blue-400 hover:to-purple-500 hover:bg-clip-text hover:text-transparent">Create Event</div>
       </div>
     </nav>
   );
