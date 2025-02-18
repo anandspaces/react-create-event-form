@@ -17,7 +17,9 @@ function Form() {
     displayTitle: false,
   });
 
-  const [tiers, setTiers] = useState([]);
+  const [tiers, setTiers] = useState([
+    { id: Date.now(), name: "", price: "", availability: "", slots: "" }
+  ]);
   const [errors, setErrors] = useState({});
   const [verticalPreview, setVerticalPreview] = useState(null);
   const [horizontalPreview, setHorizontalPreview] = useState(null);
