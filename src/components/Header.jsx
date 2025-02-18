@@ -2,6 +2,7 @@ import { useState } from "react";
 
 function Header() {
   const [isOpen, setIsOpen] = useState(false);
+  const [selected, setSelected] = useState("Create Event"); // Default selected item
 
   return (
     <nav className="flex justify-center bg-black text-white p-4">
@@ -21,11 +22,19 @@ function Header() {
           isOpen ? "block" : "hidden"
         } md:block`}
       >
-        <div className="p-2 cursor-pointer hover:bg-gradient-to-r hover:from-blue-400 hover:to-purple-500 hover:bg-clip-text hover:text-transparent">Home</div>
-        <div className="p-2 cursor-pointer hover:bg-gradient-to-r hover:from-blue-400 hover:to-purple-500 hover:bg-clip-text hover:text-transparent">Dashboard</div>
-        <div className="p-2 cursor-pointer hover:bg-gradient-to-r hover:from-blue-400 hover:to-purple-500 hover:bg-clip-text hover:text-transparent">Reports</div>
-        <div className="p-2 cursor-pointer hover:bg-gradient-to-r hover:from-blue-400 hover:to-purple-500 hover:bg-clip-text hover:text-transparent">History</div>
-        <div className="p-2 cursor-pointer hover:bg-gradient-to-r hover:from-blue-400 hover:to-purple-500 hover:bg-clip-text hover:text-transparent">Create Event</div>
+        {["Home", "Dashboard", "Reports", "History", "Create Event"].map(
+          (item) => (
+            <div
+              key={item}
+              className={`p-2 cursor-pointer relative 
+              hover:bg-gradient-to-r hover:from-blue-400 hover:to-purple-500 hover:bg-clip-text hover:text-transparent 
+              ${selected === item ? "bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent border-b-2 border-white" : ""}`}
+              onClick={() => setSelected(item)}
+            >
+              {item}
+            </div>
+          )
+        )}
       </div>
     </nav>
   );
