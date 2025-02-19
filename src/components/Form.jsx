@@ -8,6 +8,8 @@ function Form() {
     startDate: "",
     endDate: "",
     regDeadline: "",
+    venueName: "",
+    cityName: "",
     pricePerTicket: "",
     totalTickets: "",
     organiserName: "",
@@ -159,6 +161,8 @@ function Form() {
       startDate: "",
       endDate: "",
       regDeadline: "",
+      venueName: "",
+      cityName: "",
       pricePerTicket: "",
       totalTickets: "",
       organiserName: "",
@@ -401,9 +405,9 @@ function Form() {
                 <label className="block text-sm font-medium mb-2">Enter Venue Name</label>
                 <input
                   type="text"
-                  id="name"
+                  id="venueName"
                   className={`w-full p-3 rounded-lg bg-gray-800 border ${errors.name ? 'border-red-500' : 'border-gray-700'}`}
-                  value={eventData.name}
+                  value={eventData.venueName}
                   onChange={handleChange}
                 />
               </div>
@@ -411,9 +415,9 @@ function Form() {
                 <label className="block text-sm font-medium mb-2">Enter City</label>
                 <input
                   type="text"
-                  id="name"
+                  id="cityName"
                   className={`w-full p-3 rounded-lg bg-gray-800 border ${errors.name ? 'border-red-500' : 'border-gray-700'}`}
-                  value={eventData.name}
+                  value={eventData.cityName}
                   onChange={handleChange}
                 />
               </div>
@@ -421,9 +425,9 @@ function Form() {
                 <label className="block text-sm font-medium mb-2">Price per ticket</label>
                 <input
                   type="number"
-                  id="name"
+                  id="pricePerTicket"
                   className={`w-full p-3 rounded-lg bg-gray-800 border border-gray-700`}
-                  value={eventData.name}
+                  value={eventData.pricePerTicket}
                   onChange={handleChange}
                 />
               </div>
@@ -431,9 +435,9 @@ function Form() {
                 <label className="block text-sm font-medium mb-2">Total Tickets</label>
                 <input
                   type="number"
-                  id="name"
+                  id="totalTickets"
                   className={`w-full p-3 rounded-lg bg-gray-800 border border-gray-700`}
-                  value={eventData.name}
+                  value={eventData.totalTickets}
                   onChange={handleChange}
                 />
               </div>
